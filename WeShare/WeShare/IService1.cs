@@ -47,7 +47,9 @@ namespace WeShare
         [DataMember]
         public string Email { get; set; }
         [DataMember]
-        public string PassKey { get; set; }
+        public string Password { get; set; }
+        [DataMember]
+        public string GuidLine { get; set; }
         [DataMember]
         public List<int> Allergies { get; set; }
     }
