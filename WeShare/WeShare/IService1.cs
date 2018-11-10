@@ -14,7 +14,7 @@ namespace WeShare
     {
 
         [OperationContract]
-        string GetData(int value);
+        List<User> GetAllUsers();
 
         // TODO: Add your service operations here
     }
