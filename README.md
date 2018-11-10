@@ -1,2 +1,2 @@
 # WeShare
-A hackathon project for sharing games
+A hackathon project for sharing food
