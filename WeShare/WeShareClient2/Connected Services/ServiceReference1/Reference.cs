@@ -41,10 +41,13 @@ namespace WeShareClient2.ServiceReference1 {
         private string FirstNameField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string GuidLineField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string LastNameField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string PassKeyField;
+        private string PasswordField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string ZipCodeField;
@@ -138,6 +141,19 @@ namespace WeShareClient2.ServiceReference1 {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
+        public string GuidLine {
+            get {
+                return this.GuidLineField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.GuidLineField, value) != true)) {
+                    this.GuidLineField = value;
+                    this.RaisePropertyChanged("GuidLine");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
         public string LastName {
             get {
                 return this.LastNameField;
@@ -151,14 +167,14 @@ namespace WeShareClient2.ServiceReference1 {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public string PassKey {
+        public string Password {
             get {
-                return this.PassKeyField;
+                return this.PasswordField;
             }
             set {
-                if ((object.ReferenceEquals(this.PassKeyField, value) != true)) {
-                    this.PassKeyField = value;
-                    this.RaisePropertyChanged("PassKey");
+                if ((object.ReferenceEquals(this.PasswordField, value) != true)) {
+                    this.PasswordField = value;
+                    this.RaisePropertyChanged("Password");
                 }
             }
         }
@@ -324,10 +340,10 @@ namespace WeShareClient2.ServiceReference1 {
         System.Threading.Tasks.Task<int> DeleteUserAsync(WeShareClient2.ServiceReference1.UserModel user);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWeShareService/AddFood", ReplyAction="http://tempuri.org/IWeShareService/AddFoodResponse")]
-        int AddFood(WeShareClient2.ServiceReference1.FoodModel food);
+        int AddFood(WeShareClient2.ServiceReference1.FoodModel food, string cpr);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWeShareService/AddFood", ReplyAction="http://tempuri.org/IWeShareService/AddFoodResponse")]
-        System.Threading.Tasks.Task<int> AddFoodAsync(WeShareClient2.ServiceReference1.FoodModel food);
+        System.Threading.Tasks.Task<int> AddFoodAsync(WeShareClient2.ServiceReference1.FoodModel food, string cpr);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWeShareService/TakeFood", ReplyAction="http://tempuri.org/IWeShareService/TakeFoodResponse")]
         int TakeFood(WeShareClient2.ServiceReference1.FoodModel food);
@@ -395,12 +411,12 @@ namespace WeShareClient2.ServiceReference1 {
             return base.Channel.DeleteUserAsync(user);
         }
         
-        public int AddFood(WeShareClient2.ServiceReference1.FoodModel food) {
-            return base.Channel.AddFood(food);
+        public int AddFood(WeShareClient2.ServiceReference1.FoodModel food, string cpr) {
+            return base.Channel.AddFood(food, cpr);
         }
         
-        public System.Threading.Tasks.Task<int> AddFoodAsync(WeShareClient2.ServiceReference1.FoodModel food) {
-            return base.Channel.AddFoodAsync(food);
+        public System.Threading.Tasks.Task<int> AddFoodAsync(WeShareClient2.ServiceReference1.FoodModel food, string cpr) {
+            return base.Channel.AddFoodAsync(food, cpr);
         }
         
         public int TakeFood(WeShareClient2.ServiceReference1.FoodModel food) {
