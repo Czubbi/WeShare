@@ -1,13 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using WeShareClient2.Models;
+using WeShareClient2.ServiceReference1;
 
 namespace WeShareClient2.Controllers
 {
     public class FoodController : Controller
     {
+        private readonly IWeShareService _proxy;
+
+        public FoodController(IWeShareService proxy)
+        {
+            this._proxy = proxy;
+        }
         // GET: Food
         public ActionResult Index()
         {
@@ -28,17 +37,21 @@ namespace WeShareClient2.Controllers
 
         // POST: Food/Create
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult Create(Models.FoodModel food)
         {
             try
             {
-                // TODO: Add insert logic here
+                if (!ModelState.IsValid)
+                    return View("Create", food);
+
+                _proxy.AddFood(new ServiceReference1.FoodModel { ExpDate = food.ExpDate, Description = food.Description, PhotoPath = food.PhotoPath, GuidLine = food.Guid, Allergies = food.Allergies }, food.Email);
+               
 
                 return RedirectToAction("Index");
             }
             catch
             {
-                return View();
+                return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
             }
         }
 
