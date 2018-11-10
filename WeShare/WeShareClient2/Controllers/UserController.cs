@@ -45,8 +45,8 @@ namespace WeShareClient2.Controllers
             {
                 if (!ModelState.IsValid)
                     return View("Create", user);
-
-                _proxy.AddUser(new UserModel { CPR = user.CPR, FirstName = user.FirstName, LastName = user.LastName, Address = user.Address, ZipCode = user.ZipCode, City = user.City, Email = user.Email, Allergies = user.Allergies });
+                // TODO : Uploading files to webserver 
+                _proxy.AddUser(new UserModel { CPR = user.CPR, FirstName = user.FirstName, LastName = user.LastName, Address = user.Address, ZipCode = user.ZipCode, City = user.City, Email = user.Email, Allergies = user.Allergies, GuidLine = user.Guid });
 
                 return RedirectToAction("Index");
             }
