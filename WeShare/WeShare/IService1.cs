@@ -24,6 +24,38 @@ namespace WeShare
     [DataContract]
     public class User
     {
+        [DataMember]
+        public string CPR { get; set; }
+        [DataMember]
+        public string FirstName { get; set; }
+        [DataMember]
+        public string LastName { get; set; }
+        [DataMember]
+        public string Address { get; set; }
+        [DataMember]
+        public string ZipCode { get; set; }
+        [DataMember]
+        public string City { get; set; }
+        [DataMember]
+        public string Email { get; set; }
+        [DataMember]
+        public string PassKey { get; set; }
+        [DataMember]
+        List<int> Allergies { get; set; }
+    }
 
-    }   
+    [DataContract]
+    public class Food
+    {
+        [DataMember]
+        public DateTime ExpDate { get; set; }
+        [DataMember]
+        public string Description { get; set; }
+        [DataMember]
+        public string PhotoPath { get; set; }
+        [DataMember]
+        public string GuidLine { get; set; }
+        [DataMember]
+        List<int> Allergies { get; set; }
+    }
 }
