@@ -20,6 +20,12 @@
   <wsdl:message name="IWeShareService_GetUserByCPR_OutputMessage">
     <wsdl:part name="parameters" element="tns:GetUserByCPRResponse" />
   </wsdl:message>
+  <wsdl:message name="IWeShareService_GetUserByEmail_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetUserByEmail" />
+  </wsdl:message>
+  <wsdl:message name="IWeShareService_GetUserByEmail_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetUserByEmailResponse" />
+  </wsdl:message>
   <wsdl:message name="IWeShareService_AddUser_InputMessage">
     <wsdl:part name="parameters" element="tns:AddUser" />
   </wsdl:message>
@@ -53,6 +59,10 @@
       <wsdl:input wsaw:Action="http://tempuri.org/IWeShareService/GetUserByCPR" message="tns:IWeShareService_GetUserByCPR_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IWeShareService/GetUserByCPRResponse" message="tns:IWeShareService_GetUserByCPR_OutputMessage" />
     </wsdl:operation>
+    <wsdl:operation name="GetUserByEmail">
+      <wsdl:input wsaw:Action="http://tempuri.org/IWeShareService/GetUserByEmail" message="tns:IWeShareService_GetUserByEmail_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IWeShareService/GetUserByEmailResponse" message="tns:IWeShareService_GetUserByEmail_OutputMessage" />
+    </wsdl:operation>
     <wsdl:operation name="AddUser">
       <wsdl:input wsaw:Action="http://tempuri.org/IWeShareService/AddUser" message="tns:IWeShareService_AddUser_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IWeShareService/AddUserResponse" message="tns:IWeShareService_AddUser_OutputMessage" />
@@ -83,6 +93,15 @@
     </wsdl:operation>
     <wsdl:operation name="GetUserByCPR">
       <soap:operation soapAction="http://tempuri.org/IWeShareService/GetUserByCPR" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetUserByEmail">
+      <soap:operation soapAction="http://tempuri.org/IWeShareService/GetUserByEmail" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

@@ -18,13 +18,15 @@ namespace WeShare
         [OperationContract]
         UserModel GetUserByCPR(string cpr);
         [OperationContract]
+        UserModel GetUserByEmail(string email);
+        [OperationContract]
         int AddUser(UserModel user);
         [OperationContract]
         int DeleteUser(UserModel user);
         [OperationContract]
-        int AddFood(FoodModel food,string cpr);
+        int AddFood(FoodModel food,string email);
         [OperationContract]
-        int TakeFood(FoodModel food);
+        int TakeFood(FoodModel food, string email);
     }
 
 

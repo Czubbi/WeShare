@@ -10,10 +10,10 @@
   </Table>
   <Table Name="dbo.UserAllergy" Member="UserAllergies">
     <Type Name="UserAllergy">
-      <Column Name="FoodID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="UserID" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="AllergyID" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Association Name="Allergy_UserAllergy" Member="Allergy" ThisKey="AllergyID" OtherKey="ID" Type="Allergy" IsForeignKey="true" />
-      <Association Name="User_UserAllergy" Member="User" ThisKey="FoodID" OtherKey="ID" Type="User" IsForeignKey="true" />
+      <Association Name="User_UserAllergy" Member="User" ThisKey="UserID" OtherKey="ID" Type="User" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.Food" Member="Foods">
@@ -24,8 +24,10 @@
       <Column Name="Description" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
       <Column Name="PicPath" Type="System.String" DbType="VarChar(40)" CanBeNull="true" />
       <Column Name="Guid" Type="System.String" DbType="VarChar(40)" CanBeNull="true" />
+      <Column Name="TakenBy" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Association Name="Food_FoodAllergy" Member="FoodAllergies" ThisKey="ID" OtherKey="FoodID" Type="FoodAllergy" />
-      <Association Name="User_Food" Member="User" ThisKey="UserID" OtherKey="ID" Type="User" IsForeignKey="true" />
+      <Association Name="User_Food" Member="User" ThisKey="TakenBy" OtherKey="ID" Type="User" IsForeignKey="true" />
+      <Association Name="User_Food1" Member="User1" ThisKey="UserID" OtherKey="ID" Type="User" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.FoodAllergy" Member="FoodAllergies">
@@ -55,8 +57,9 @@
       <Column Name="GuidLine" Type="System.String" DbType="VarChar(40)" CanBeNull="true" />
       <Column Name="Email" Type="System.String" DbType="VarChar(40)" CanBeNull="true" />
       <Column Name="PassKey" Type="System.String" DbType="VarChar(40)" CanBeNull="true" />
-      <Association Name="User_UserAllergy" Member="UserAllergies" ThisKey="ID" OtherKey="FoodID" Type="UserAllergy" />
-      <Association Name="User_Food" Member="Foods" ThisKey="ID" OtherKey="UserID" Type="Food" />
+      <Association Name="User_UserAllergy" Member="UserAllergies" ThisKey="ID" OtherKey="UserID" Type="UserAllergy" />
+      <Association Name="User_Food" Member="Foods" ThisKey="ID" OtherKey="TakenBy" Type="Food" />
+      <Association Name="User_Food1" Member="Foods1" ThisKey="ID" OtherKey="UserID" Type="Food" />
       <Association Name="User_Password" Member="Passwords" ThisKey="PassKey" OtherKey="UserPassKey" Type="Password" />
     </Type>
   </Table>
