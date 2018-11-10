@@ -13,9 +13,42 @@ namespace WeShare
     public class WeShareService : IWeShareService
     {
         DatabaseClassesDataContext db = new DatabaseClassesDataContext();
-        public int AddFood(FoodModel food)
+        public int AddFood(FoodModel food,string cpr)
         {
-            throw new NotImplementedException();
+            var foods = db.Foods;
+            var user = db.Users.SingleOrDefault(x => x.CPR == cpr);
+            var foodToInsert = new Food { Description = food.Description, ExpDate = food.ExpDate, Guid = food.GuidLine, PicPath = food.PhotoPath, UserID=user.ID };
+            try
+            {
+                foods.InsertOnSubmit(foodToInsert);
+                db.SubmitChanges();
+            }
+            catch (Exception e)
+            {
+                return 0;
+            }
+            var foodInDB = db.Foods.SingleOrDefault(x => x.Guid == food.GuidLine);
+            if (foodInDB == null)
+            {
+                return 0;
+            }
+            else
+            {
+                foreach (var a in food.Allergies)
+                {
+                    FoodAllergy foodAllergy = new FoodAllergy { AllergyID = a, FoodID = foodInDB.ID };
+                    try
+                    {
+                        db.FoodAllergies.InsertOnSubmit(foodAllergy);
+                        db.SubmitChanges();
+                    }
+                    catch (Exception e)
+                    {
+                        return 0;
+                    }
+                }
+                return 1;
+            }
         }
 
         public int AddUser(UserModel user)

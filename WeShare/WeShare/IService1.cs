@@ -22,7 +22,7 @@ namespace WeShare
         [OperationContract]
         int DeleteUser(UserModel user);
         [OperationContract]
-        int AddFood(FoodModel food);
+        int AddFood(FoodModel food,string cpr);
         [OperationContract]
         int TakeFood(FoodModel food);
     }
@@ -49,7 +49,7 @@ namespace WeShare
         [DataMember]
         public string PassKey { get; set; }
         [DataMember]
-        List<int> Allergies { get; set; }
+        public List<int> Allergies { get; set; }
     }
 
     [DataContract]
@@ -64,6 +64,6 @@ namespace WeShare
         [DataMember]
         public string GuidLine { get; set; }
         [DataMember]
-        List<int> Allergies { get; set; }
+        public List<int> Allergies { get; set; }
     }
 }
