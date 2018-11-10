@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="WeShare" Class="DatabaseClassesDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=wesharehackathon.database.windows.net;Initial Catalog=WeShare;User ID=weshareadmin" SettingsObjectName="WeShare.Properties.Settings" SettingsPropertyName="WeShareConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.Allergy" Member="Allergies">
+    <Type Name="Allergy">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="VarChar(40)" CanBeNull="true" />
+      <Association Name="Allergy_UserAllergy" Member="UserAllergies" ThisKey="ID" OtherKey="AllergyID" Type="UserAllergy" />
+      <Association Name="Allergy_FoodAllergy" Member="FoodAllergies" ThisKey="ID" OtherKey="AllergyID" Type="FoodAllergy" />
+    </Type>
+  </Table>
+  <Table Name="dbo.UserAllergy" Member="UserAllergies">
+    <Type Name="UserAllergy">
+      <Column Name="FoodID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="AllergyID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="Allergy_UserAllergy" Member="Allergy" ThisKey="AllergyID" OtherKey="ID" Type="Allergy" IsForeignKey="true" />
+      <Association Name="User_UserAllergy" Member="User" ThisKey="FoodID" OtherKey="ID" Type="User" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Food" Member="Foods">
+    <Type Name="Food">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="UserID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ExpDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="Description" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="PicPath" Type="System.String" DbType="VarChar(40)" CanBeNull="true" />
+      <Column Name="Guid" Type="System.String" DbType="VarChar(40)" CanBeNull="true" />
+      <Association Name="Food_FoodAllergy" Member="FoodAllergies" ThisKey="ID" OtherKey="FoodID" Type="FoodAllergy" />
+      <Association Name="User_Food" Member="User" ThisKey="UserID" OtherKey="ID" Type="User" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.FoodAllergy" Member="FoodAllergies">
+    <Type Name="FoodAllergy">
+      <Column Name="FoodID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="AllergyID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="Allergy_FoodAllergy" Member="Allergy" ThisKey="AllergyID" OtherKey="ID" Type="Allergy" IsForeignKey="true" />
+      <Association Name="Food_FoodAllergy" Member="Food" ThisKey="FoodID" OtherKey="ID" Type="Food" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Password" Member="Passwords">
+    <Type Name="Password">
+      <Column Name="UserPassKey" Type="System.String" DbType="VarChar(40)" CanBeNull="true" />
+      <Column Name="Password" Member="Password1" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Association Name="User_Password" Member="User" ThisKey="UserPassKey" OtherKey="PassKey" Type="User" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.[User]" Member="Users">
+    <Type Name="User">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="CPR" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="FirstName" Type="System.String" DbType="VarChar(40)" CanBeNull="true" />
+      <Column Name="LastName" Type="System.String" DbType="VarChar(40)" CanBeNull="true" />
+      <Column Name="Address" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="ZipCode" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="City" Type="System.String" DbType="VarChar(40)" CanBeNull="true" />
+      <Column Name="GuidLine" Type="System.String" DbType="VarChar(40)" CanBeNull="true" />
+      <Column Name="Email" Type="System.String" DbType="VarChar(40)" CanBeNull="true" />
+      <Column Name="PassKey" Type="System.String" DbType="VarChar(40)" CanBeNull="true" />
+      <Association Name="User_UserAllergy" Member="UserAllergies" ThisKey="ID" OtherKey="FoodID" Type="UserAllergy" />
+      <Association Name="User_Food" Member="Foods" ThisKey="ID" OtherKey="UserID" Type="Food" />
+      <Association Name="User_Password" Member="Passwords" ThisKey="PassKey" OtherKey="UserPassKey" Type="Password" />
+    </Type>
+  </Table>
+</Database>
