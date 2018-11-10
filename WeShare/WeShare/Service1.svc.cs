@@ -5,6 +5,7 @@ using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.ServiceModel.Web;
 using System.Text;
+using System.Web.Security;
 
 namespace WeShare
 {
@@ -15,6 +16,7 @@ namespace WeShare
         DatabaseClassesDataContext db = new DatabaseClassesDataContext();
         public int AddFood(FoodModel food,string cpr)
         {
+            db.Connection.Open();
             var foods = db.Foods;
             var user = db.Users.SingleOrDefault(x => x.CPR == cpr);
             var foodToInsert = new Food { Description = food.Description, ExpDate = food.ExpDate, Guid = food.GuidLine, PicPath = food.PhotoPath, UserID=user.ID };
@@ -47,13 +49,36 @@ namespace WeShare
                         return 0;
                     }
                 }
+                db.Connection.Close();
                 return 1;
             }
         }
 
         public int AddUser(UserModel user)
         {
-            throw new NotImplementedException();
+            db.Connection.Open();
+            var users = db.Users;
+            string passkey=Membership.GeneratePassword(user.Password.Length,0);
+            var userToInsert = new User { Address = user.Address, City = user.City, CPR = user.CPR, Email = user.CPR, LastName = user.LastName, FirstName = user.FirstName, GuidLine = user.GuidLine, ZipCode = user.ZipCode,PassKey=passkey };
+            try
+            {
+                users.InsertOnSubmit(userToInsert);
+                db.SubmitChanges();
+            }
+            catch (Exception e)
+            {
+                return 0;
+            }
+            var password = new Password { Password1 = user.Password, UserPassKey = passkey };
+            try {
+                db.Passwords.InsertOnSubmit(password);
+                db.SubmitChanges();
+            }
+            catch(Exception e)
+            {
+                return 0;
+            }
+            return 1;
         }
 
         public int DeleteUser(UserModel user)
