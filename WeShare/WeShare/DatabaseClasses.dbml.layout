@@ -1,0 +1,84 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11, 8.5" name="DatabaseClasses">
+  <DataContextMoniker Name="/DatabaseClassesDataContext" />
+  <nestedChildShapes>
+    <classShape Id="0dcf0b6e-4821-4dd3-b642-600d4b17d3d4" absoluteBounds="0.75, 0.75, 2, 1.1939925130208335">
+      <DataClassMoniker Name="/DatabaseClassesDataContext/Allergy" />
+      <nestedChildShapes>
+        <elementListCompartment Id="a25c0d43-76b1-4242-8cb9-26b6335f907a" absoluteBounds="0.765, 1.21, 1.9700000000000002, 0.63399251302083326" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="33ff8560-ff2a-4b7a-9436-dbca59f29f29" absoluteBounds="3.5, 1.75, 2, 1.1939925130208335">
+      <DataClassMoniker Name="/DatabaseClassesDataContext/UserAllergy" />
+      <nestedChildShapes>
+        <elementListCompartment Id="77661d8f-efe4-46e9-876c-5d4dece4fe99" absoluteBounds="3.515, 2.21, 1.9700000000000002, 0.63399251302083326" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="7ee86dbf-9019-4570-bd31-2d2ad17b70b9" absoluteBounds="3.5, 6.25, 2, 1.9631982421875005">
+      <DataClassMoniker Name="/DatabaseClassesDataContext/Food" />
+      <nestedChildShapes>
+        <elementListCompartment Id="c73a79bf-75a9-42a0-9e0a-763c128cf5a5" absoluteBounds="3.515, 6.71, 1.9700000000000002, 1.4031982421875" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="14cfd0fa-2630-4065-82f9-96ceb347801b" absoluteBounds="6.25, 6.625, 2, 1.1939925130208327">
+      <DataClassMoniker Name="/DatabaseClassesDataContext/FoodAllergy" />
+      <nestedChildShapes>
+        <elementListCompartment Id="3806e577-0466-4e3a-a80a-7ba66fe814b3" absoluteBounds="6.265, 7.085, 1.9700000000000002, 0.63399251302083326" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="301eb8a8-93af-474d-bcc8-73b0a677823c" absoluteBounds="3.5, 4.375, 2, 1.1939925130208344">
+      <DataClassMoniker Name="/DatabaseClassesDataContext/Password" />
+      <nestedChildShapes>
+        <elementListCompartment Id="4191e532-0b25-49c6-9b36-75f6506f002d" absoluteBounds="3.515, 4.835, 1.9700000000000002, 0.63399251302083326" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="e3fb9aa9-2139-4d20-9097-70bebec7f2b4" absoluteBounds="0.75, 3, 2, 2.732403971354167">
+      <DataClassMoniker Name="/DatabaseClassesDataContext/User" />
+      <nestedChildShapes>
+        <elementListCompartment Id="592b7e8f-238f-4843-b12a-8a8034a12c25" absoluteBounds="0.765, 3.46, 1.9700000000000002, 2.1724039713541665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(1.75 : 1.94399251302083); (1.75 : 2.34699625651042); (3.5 : 2.34699625651042)]" fixedFrom="Algorithm" fixedTo="NotFixed">
+      <AssociationMoniker Name="/DatabaseClassesDataContext/Allergy/Allergy_UserAllergy" />
+      <nodes>
+        <classShapeMoniker Id="0dcf0b6e-4821-4dd3-b642-600d4b17d3d4" />
+        <classShapeMoniker Id="33ff8560-ff2a-4b7a-9436-dbca59f29f29" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(2.75 : 1.21875); (7.25 : 1.21875); (7.25 : 6.625)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/DatabaseClassesDataContext/Allergy/Allergy_FoodAllergy" />
+      <nodes>
+        <classShapeMoniker Id="0dcf0b6e-4821-4dd3-b642-600d4b17d3d4" />
+        <classShapeMoniker Id="14cfd0fa-2630-4065-82f9-96ceb347801b" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(5.5 : 7.22199625651042); (6.25 : 7.22199625651042)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/DatabaseClassesDataContext/Food/Food_FoodAllergy" />
+      <nodes>
+        <classShapeMoniker Id="7ee86dbf-9019-4570-bd31-2d2ad17b70b9" />
+        <classShapeMoniker Id="14cfd0fa-2630-4065-82f9-96ceb347801b" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(2.75 : 3); (3.125 : 2.625); (3.125 : 3.31899251302083); (3.5 : 2.94399251302083)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <AssociationMoniker Name="/DatabaseClassesDataContext/User/User_UserAllergy" />
+      <nodes>
+        <classShapeMoniker Id="e3fb9aa9-2139-4d20-9097-70bebec7f2b4" />
+        <classShapeMoniker Id="33ff8560-ff2a-4b7a-9436-dbca59f29f29" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(1.75 : 5.73240397135417); (1.75 : 7.23159912109375); (3.5 : 7.23159912109375)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/DatabaseClassesDataContext/User/User_Food" />
+      <nodes>
+        <classShapeMoniker Id="e3fb9aa9-2139-4d20-9097-70bebec7f2b4" />
+        <classShapeMoniker Id="7ee86dbf-9019-4570-bd31-2d2ad17b70b9" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(2.75 : 4.97199625651042); (3.5 : 4.97199625651042)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/DatabaseClassesDataContext/User/User_Password" />
+      <nodes>
+        <classShapeMoniker Id="e3fb9aa9-2139-4d20-9097-70bebec7f2b4" />
+        <classShapeMoniker Id="301eb8a8-93af-474d-bcc8-73b0a677823c" />
+      </nodes>
+    </associationConnector>
+  </nestedChildShapes>
+</ordesignerObjectsDiagram>

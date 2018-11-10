@@ -10,19 +10,27 @@ namespace WeShare
 {
     // NOTE: You can use the "Rename" command on the "Refactor" menu to change the interface name "IService1" in both code and config file together.
     [ServiceContract]
-    public interface IService1
+    public interface IWeShareService
     {
 
         [OperationContract]
-        List<User> GetAllUsers();
-
-        // TODO: Add your service operations here
+        List<UserModel> GetAllUsers();
+        [OperationContract]
+        UserModel GetUserByCPR(string cpr);
+        [OperationContract]
+        int AddUser(UserModel user);
+        [OperationContract]
+        int DeleteUser(UserModel user);
+        [OperationContract]
+        int AddFood(FoodModel food);
+        [OperationContract]
+        int TakeFood(FoodModel food);
     }
 
 
     // Use a data contract as illustrated in the sample below to add composite types to service operations.
     [DataContract]
-    public class User
+    public class UserModel
     {
         [DataMember]
         public string CPR { get; set; }
@@ -45,7 +53,7 @@ namespace WeShare
     }
 
     [DataContract]
-    public class Food
+    public class FoodModel
     {
         [DataMember]
         public DateTime ExpDate { get; set; }

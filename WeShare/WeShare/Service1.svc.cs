@@ -10,24 +10,37 @@ namespace WeShare
 {
     // NOTE: You can use the "Rename" command on the "Refactor" menu to change the class name "Service1" in code, svc and config file together.
     // NOTE: In order to launch WCF Test Client for testing this service, please select Service1.svc or Service1.svc.cs at the Solution Explorer and start debugging.
-    public class Service1 : IService1
+    public class WeShareService : IWeShareService
     {
-        public string GetData(int value)
+        DatabaseClassesDataContext db = new DatabaseClassesDataContext();
+        public int AddFood(FoodModel food)
         {
-            return string.Format("You entered: {0}", value);
+            throw new NotImplementedException();
         }
 
-        public CompositeType GetDataUsingDataContract(CompositeType composite)
+        public int AddUser(UserModel user)
         {
-            if (composite == null)
-            {
-                throw new ArgumentNullException("composite");
-            }
-            if (composite.BoolValue)
-            {
-                composite.StringValue += "Suffix";
-            }
-            return composite;
+            throw new NotImplementedException();
+        }
+
+        public int DeleteUser(UserModel user)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<UserModel> GetAllUsers()
+        {
+            throw new NotImplementedException();
+        }
+
+        public UserModel GetUserByCPR(string cpr)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int TakeFood(FoodModel food)
+        {
+            throw new NotImplementedException();
         }
     }
 }
