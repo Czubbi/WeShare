@@ -17,5 +17,6 @@ namespace WeShareClient2.Models
         public string Password { get; set; }
         public string FileName { get; set; }
         public string Guid { get; set; }
+        public int[] Allergies { get; set; }
     }
 }
