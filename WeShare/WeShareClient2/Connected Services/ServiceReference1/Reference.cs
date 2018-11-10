@@ -327,6 +327,12 @@ namespace WeShareClient2.ServiceReference1 {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWeShareService/GetUserByCPR", ReplyAction="http://tempuri.org/IWeShareService/GetUserByCPRResponse")]
         System.Threading.Tasks.Task<WeShareClient2.ServiceReference1.UserModel> GetUserByCPRAsync(string cpr);
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWeShareService/GetUserByEmail", ReplyAction="http://tempuri.org/IWeShareService/GetUserByEmailResponse")]
+        WeShareClient2.ServiceReference1.UserModel GetUserByEmail(string email);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWeShareService/GetUserByEmail", ReplyAction="http://tempuri.org/IWeShareService/GetUserByEmailResponse")]
+        System.Threading.Tasks.Task<WeShareClient2.ServiceReference1.UserModel> GetUserByEmailAsync(string email);
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWeShareService/AddUser", ReplyAction="http://tempuri.org/IWeShareService/AddUserResponse")]
         int AddUser(WeShareClient2.ServiceReference1.UserModel user);
         
@@ -340,16 +346,16 @@ namespace WeShareClient2.ServiceReference1 {
         System.Threading.Tasks.Task<int> DeleteUserAsync(WeShareClient2.ServiceReference1.UserModel user);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWeShareService/AddFood", ReplyAction="http://tempuri.org/IWeShareService/AddFoodResponse")]
-        int AddFood(WeShareClient2.ServiceReference1.FoodModel food, string cpr);
+        int AddFood(WeShareClient2.ServiceReference1.FoodModel food, string email);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWeShareService/AddFood", ReplyAction="http://tempuri.org/IWeShareService/AddFoodResponse")]
-        System.Threading.Tasks.Task<int> AddFoodAsync(WeShareClient2.ServiceReference1.FoodModel food, string cpr);
+        System.Threading.Tasks.Task<int> AddFoodAsync(WeShareClient2.ServiceReference1.FoodModel food, string email);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWeShareService/TakeFood", ReplyAction="http://tempuri.org/IWeShareService/TakeFoodResponse")]
-        int TakeFood(WeShareClient2.ServiceReference1.FoodModel food);
+        int TakeFood(WeShareClient2.ServiceReference1.FoodModel food, string email);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWeShareService/TakeFood", ReplyAction="http://tempuri.org/IWeShareService/TakeFoodResponse")]
-        System.Threading.Tasks.Task<int> TakeFoodAsync(WeShareClient2.ServiceReference1.FoodModel food);
+        System.Threading.Tasks.Task<int> TakeFoodAsync(WeShareClient2.ServiceReference1.FoodModel food, string email);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -395,6 +401,14 @@ namespace WeShareClient2.ServiceReference1 {
             return base.Channel.GetUserByCPRAsync(cpr);
         }
         
+        public WeShareClient2.ServiceReference1.UserModel GetUserByEmail(string email) {
+            return base.Channel.GetUserByEmail(email);
+        }
+        
+        public System.Threading.Tasks.Task<WeShareClient2.ServiceReference1.UserModel> GetUserByEmailAsync(string email) {
+            return base.Channel.GetUserByEmailAsync(email);
+        }
+        
         public int AddUser(WeShareClient2.ServiceReference1.UserModel user) {
             return base.Channel.AddUser(user);
         }
@@ -411,20 +425,20 @@ namespace WeShareClient2.ServiceReference1 {
             return base.Channel.DeleteUserAsync(user);
         }
         
-        public int AddFood(WeShareClient2.ServiceReference1.FoodModel food, string cpr) {
-            return base.Channel.AddFood(food, cpr);
+        public int AddFood(WeShareClient2.ServiceReference1.FoodModel food, string email) {
+            return base.Channel.AddFood(food, email);
         }
         
-        public System.Threading.Tasks.Task<int> AddFoodAsync(WeShareClient2.ServiceReference1.FoodModel food, string cpr) {
-            return base.Channel.AddFoodAsync(food, cpr);
+        public System.Threading.Tasks.Task<int> AddFoodAsync(WeShareClient2.ServiceReference1.FoodModel food, string email) {
+            return base.Channel.AddFoodAsync(food, email);
         }
         
-        public int TakeFood(WeShareClient2.ServiceReference1.FoodModel food) {
-            return base.Channel.TakeFood(food);
+        public int TakeFood(WeShareClient2.ServiceReference1.FoodModel food, string email) {
+            return base.Channel.TakeFood(food, email);
         }
         
-        public System.Threading.Tasks.Task<int> TakeFoodAsync(WeShareClient2.ServiceReference1.FoodModel food) {
-            return base.Channel.TakeFoodAsync(food);
+        public System.Threading.Tasks.Task<int> TakeFoodAsync(WeShareClient2.ServiceReference1.FoodModel food, string email) {
+            return base.Channel.TakeFoodAsync(food, email);
         }
     }
 }

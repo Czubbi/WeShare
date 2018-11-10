@@ -14,11 +14,11 @@ namespace WeShare
     public class WeShareService : IWeShareService
     {
         DatabaseClassesDataContext db = new DatabaseClassesDataContext();
-        public int AddFood(FoodModel food,string cpr)
+        public int AddFood(FoodModel food,string email)
         {
             db.Connection.Open();
             var foods = db.Foods;
-            var user = db.Users.SingleOrDefault(x => x.CPR == cpr);
+            var user = db.Users.SingleOrDefault(x => x.Email == email);
             var foodToInsert = new Food { Description = food.Description, ExpDate = food.ExpDate, Guid = food.GuidLine, PicPath = food.PhotoPath, UserID=user.ID };
             try
             {
@@ -104,15 +104,43 @@ namespace WeShare
 
         public List<UserModel> GetAllUsers()
         {
-            throw new NotImplementedException();
+            var listToReturn = db.Users.Select(x => new UserModel
+            {
+                Address = x.Address,
+                Allergies = db.UserAllergies.Where(y => y.UserID == x.ID).Select(y => (int)y.AllergyID).ToList(),
+                City = x.City,
+                CPR = x.CPR,
+                Email = x.Email,
+                FirstName = x.FirstName,
+                GuidLine = x.GuidLine,
+                LastName = x.LastName,
+                Password = x.PassKey,
+                ZipCode = x.ZipCode
+            }).ToList();
+            return listToReturn;
         }
 
         public UserModel GetUserByCPR(string cpr)
         {
-            throw new NotImplementedException();
+            var user = GetAllUsers().SingleOrDefault(x => x.CPR == cpr);
+            if (user != null)
+            {
+                return user;
+            }
+            else throw new Exception("User cannot be found");
         }
 
-        public int TakeFood(FoodModel food)
+        public UserModel GetUserByEmail(string email)
+        {
+            var user = GetAllUsers().SingleOrDefault(x => x.Email == email);
+            if (user != null)
+            {
+                return user;
+            }
+            else throw new Exception("User cannot be found");
+        }
+
+        public int TakeFood(FoodModel food,string email)
         {
             throw new NotImplementedException();
         }

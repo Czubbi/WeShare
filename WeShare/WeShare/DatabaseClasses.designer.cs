@@ -210,7 +210,7 @@ namespace WeShare
 	public partial class UserAllergy
 	{
 		
-		private System.Nullable<int> _FoodID;
+		private System.Nullable<int> _UserID;
 		
 		private System.Nullable<int> _AllergyID;
 		
@@ -218,18 +218,18 @@ namespace WeShare
 		{
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FoodID", DbType="Int")]
-		public System.Nullable<int> FoodID
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UserID", DbType="Int")]
+		public System.Nullable<int> UserID
 		{
 			get
 			{
-				return this._FoodID;
+				return this._UserID;
 			}
 			set
 			{
-				if ((this._FoodID != value))
+				if ((this._UserID != value))
 				{
-					this._FoodID = value;
+					this._UserID = value;
 				}
 			}
 		}
@@ -269,7 +269,11 @@ namespace WeShare
 		
 		private string _Guid;
 		
+		private System.Nullable<int> _TakenBy;
+		
 		private EntityRef<User> _User;
+		
+		private EntityRef<User> _User1;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -287,11 +291,14 @@ namespace WeShare
     partial void OnPicPathChanged();
     partial void OnGuidChanging(string value);
     partial void OnGuidChanged();
+    partial void OnTakenByChanging(System.Nullable<int> value);
+    partial void OnTakenByChanged();
     #endregion
 		
 		public Food()
 		{
 			this._User = default(EntityRef<User>);
+			this._User1 = default(EntityRef<User>);
 			OnCreated();
 		}
 		
@@ -326,7 +333,7 @@ namespace WeShare
 			{
 				if ((this._UserID != value))
 				{
-					if (this._User.HasLoadedOrAssignedValue)
+					if (this._User1.HasLoadedOrAssignedValue)
 					{
 						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
 					}
@@ -419,7 +426,31 @@ namespace WeShare
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_Food", Storage="_User", ThisKey="UserID", OtherKey="ID", IsForeignKey=true)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TakenBy", DbType="Int")]
+		public System.Nullable<int> TakenBy
+		{
+			get
+			{
+				return this._TakenBy;
+			}
+			set
+			{
+				if ((this._TakenBy != value))
+				{
+					if (this._User.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnTakenByChanging(value);
+					this.SendPropertyChanging();
+					this._TakenBy = value;
+					this.SendPropertyChanged("TakenBy");
+					this.OnTakenByChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_Food", Storage="_User", ThisKey="TakenBy", OtherKey="ID", IsForeignKey=true)]
 		public User User
 		{
 			get
@@ -442,13 +473,47 @@ namespace WeShare
 					if ((value != null))
 					{
 						value.Foods.Add(this);
+						this._TakenBy = value.ID;
+					}
+					else
+					{
+						this._TakenBy = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("User");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_Food1", Storage="_User1", ThisKey="UserID", OtherKey="ID", IsForeignKey=true)]
+		public User User1
+		{
+			get
+			{
+				return this._User1.Entity;
+			}
+			set
+			{
+				User previousValue = this._User1.Entity;
+				if (((previousValue != value) 
+							|| (this._User1.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._User1.Entity = null;
+						previousValue.Foods1.Remove(this);
+					}
+					this._User1.Entity = value;
+					if ((value != null))
+					{
+						value.Foods1.Add(this);
 						this._UserID = value.ID;
 					}
 					else
 					{
 						this._UserID = default(Nullable<int>);
 					}
-					this.SendPropertyChanged("User");
+					this.SendPropertyChanged("User1");
 				}
 			}
 		}
@@ -592,6 +657,8 @@ namespace WeShare
 		
 		private EntitySet<Food> _Foods;
 		
+		private EntitySet<Food> _Foods1;
+		
     #region Extensibility Method Definitions
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
@@ -621,6 +688,7 @@ namespace WeShare
 		public User()
 		{
 			this._Foods = new EntitySet<Food>(new Action<Food>(this.attach_Foods), new Action<Food>(this.detach_Foods));
+			this._Foods1 = new EntitySet<Food>(new Action<Food>(this.attach_Foods1), new Action<Food>(this.detach_Foods1));
 			OnCreated();
 		}
 		
@@ -824,7 +892,7 @@ namespace WeShare
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_Food", Storage="_Foods", ThisKey="ID", OtherKey="UserID")]
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_Food", Storage="_Foods", ThisKey="ID", OtherKey="TakenBy")]
 		public EntitySet<Food> Foods
 		{
 			get
@@ -834,6 +902,19 @@ namespace WeShare
 			set
 			{
 				this._Foods.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_Food1", Storage="_Foods1", ThisKey="ID", OtherKey="UserID")]
+		public EntitySet<Food> Foods1
+		{
+			get
+			{
+				return this._Foods1;
+			}
+			set
+			{
+				this._Foods1.Assign(value);
 			}
 		}
 		
@@ -867,6 +948,18 @@ namespace WeShare
 		{
 			this.SendPropertyChanging();
 			entity.User = null;
+		}
+		
+		private void attach_Foods1(Food entity)
+		{
+			this.SendPropertyChanging();
+			entity.User1 = this;
+		}
+		
+		private void detach_Foods1(Food entity)
+		{
+			this.SendPropertyChanging();
+			entity.User1 = null;
 		}
 	}
 }
