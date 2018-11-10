@@ -78,12 +78,28 @@ namespace WeShare
             {
                 return 0;
             }
+            db.Connection.Close();
             return 1;
         }
 
         public int DeleteUser(UserModel user)
         {
-            throw new NotImplementedException();
+            db.Connection.Open();
+            var userToDelete = db.Users.SingleOrDefault(x => x.CPR == user.CPR);
+            if (userToDelete != null)
+            {
+                db.Users.DeleteOnSubmit(userToDelete);
+                try
+                {
+                    db.SubmitChanges();
+                }
+                catch (Exception e)
+                {
+                    return 0;
+                }
+                return 1;
+            }
+            else return 0;
         }
 
         public List<UserModel> GetAllUsers()
