@@ -142,7 +142,17 @@ namespace WeShare
 
         public int TakeFood(FoodModel food,string email)
         {
-            throw new NotImplementedException();
+            Food foodTaken = db.Foods.SingleOrDefault(x => x.Guid == food.GuidLine);
+            foodTaken.TakenBy = db.Users.SingleOrDefault(x => x.Email == email).ID;
+            try
+            {
+                db.SubmitChanges();
+            }
+            catch (Exception e)
+            {
+                return 0;
+            }
+            return 1;
         }
     }
 }
