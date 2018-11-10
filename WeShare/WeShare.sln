@@ -5,7 +5,7 @@ VisualStudioVersion = 15.0.28010.2036
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeShare", "WeShare\WeShare.csproj", "{0434E8D8-8C11-4868-A6AE-C03CA9676A1D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeShareClient2", "WeShareClient2\WeShareClient2.csproj", "{3525A916-6FB3-4CC6-84EC-A813ADA7AEEF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeShareClient", "WeShareClient2\WeShareClient.csproj", "{3525A916-6FB3-4CC6-84EC-A813ADA7AEEF}"
 	ProjectSection(ProjectDependencies) = postProject
 		{0434E8D8-8C11-4868-A6AE-C03CA9676A1D} = {0434E8D8-8C11-4868-A6AE-C03CA9676A1D}
 	EndProjectSection
