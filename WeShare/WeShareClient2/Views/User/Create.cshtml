@@ -5,11 +5,11 @@
 }
 
 <h2>Register</h2>
-
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD-i9eQttqqwEOLH8tqPgYocn3Cx-aAa7I&libraries=places&callback=initAutocomplete" async defer></script>
+<script src="~/Scripts/googleMaps.js"></script>
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-
 <div class="form-horizontal">
     <hr />
     <div class="col-md-6">
@@ -41,7 +41,7 @@
         <div class="form-group">
             <label class="control-label col-md-4">Address:</label>
             <div class="col-md-6">
-                @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control", @id = "autocomplete", @onFocus = "geolocate()" } })
                 @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
             </div>
         </div>
