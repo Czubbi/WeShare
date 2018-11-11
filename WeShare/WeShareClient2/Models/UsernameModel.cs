@@ -5,9 +5,8 @@ using System.Web;
 
 namespace WeShareClient2.Models
 {
-    public class LoginModel
+    public class UsernameModel
     {
         public string Username { get; set; }
-        public string PassKey { get; set; }
     }
 }

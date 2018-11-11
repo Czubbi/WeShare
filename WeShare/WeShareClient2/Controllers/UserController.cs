@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Security.Cryptography;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using WeShareClient2.Models;
@@ -22,7 +24,69 @@ namespace WeShareClient2.Controllers
         // GET: User
         public ActionResult Index()
         {
-            return View();
+
+            if (Request.Cookies.Get("login") == null)
+            {
+                return View();
+            }
+            else
+            {
+                string userName = Request.Cookies.Get("login").Values["feketePorzeczka"];
+                UsernameModel login = new UsernameModel { Username = userName };
+                return RedirectToAction("LoggedIn", login);
+
+            }
+
+            
+        }
+
+        [HttpPost]
+        public ActionResult Index(LoginModel userCred)
+        {
+            if (!ModelState.IsValid)
+                return View(userCred);
+
+            
+            var dbUser = _proxy.GetAllUsers().SingleOrDefault(x => x.Email == userCred.Username);
+
+            if (dbUser == null)
+            {
+                return View(userCred);
+            }
+
+            string hashString = Hash(userCred.PassKey);
+            if (dbUser.Password == userCred.PassKey)
+            {
+                UsernameModel userToPass = new UsernameModel { Username = userCred.Username };
+
+                HttpCookie cookie = new HttpCookie("login");
+                cookie.Values.Add("feketePorzeczka", userToPass.Username);
+                cookie.Values.Add("pirosPorzeczka", hashString);
+                cookie.Expires = DateTime.Now.AddDays(7);
+                return RedirectToAction("LoggedIn", userToPass);
+            }
+            else return View(userCred);
+
+        }
+
+        public ActionResult LoggedIn(UsernameModel user)
+        {
+            if (!ModelState.IsValid)
+                return RedirectToAction("Index");
+
+            var dbUser = _proxy.GetAllUsers().SingleOrDefault(x => x.Email == user.Username);
+            RegistrationModel fullUser = new RegistrationModel { CPR = dbUser.CPR, FirstName = dbUser.FirstName, LastName = dbUser.LastName, Address = dbUser.Address, ZipCode = dbUser.ZipCode, City = dbUser.City, Email = dbUser.Email, Allergies = dbUser.Allergies, Password = dbUser.Password };
+
+            if (Request.Cookies.Get("login") != null)
+            {
+                if (Hash(fullUser.Password) == Request.Cookies.Get("login").Values["pirosPorzeczka"])
+                {
+                    return View("LoggedIn", fullUser);
+                }
+                else return RedirectToAction("Index");
+            }
+            else return RedirectToAction("Index");
+
         }
 
         // GET: User/Details/5
@@ -98,6 +162,24 @@ namespace WeShareClient2.Controllers
             {
                 return View();
             }
+        }
+
+        public string Hash(string input)
+        {
+            MD5 md = MD5.Create();
+
+            byte[] asciiBytes = Encoding.ASCII.GetBytes(input);
+
+            byte[] hashString = md.ComputeHash(asciiBytes);
+
+            StringBuilder sb = new StringBuilder();
+
+            for(int i=0; i< hashString.Length; i++)
+            { 
+                 sb.Append(hashString[i].ToString("x2"));
+            }
+
+            return sb.ToString();
         }
     }
 }

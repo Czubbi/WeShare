@@ -85,11 +85,14 @@ namespace WeShareClient2.Controllers
 
         // POST: Food/Delete/5
         [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        public ActionResult Delete(Models.FoodModel food)
         {
             try
             {
-                // TODO: Add delete logic here
+                if (!ModelState.IsValid)
+                    return View("Index");
+
+                
 
                 return RedirectToAction("Index");
             }
