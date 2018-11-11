@@ -5,112 +5,123 @@
 }
 
 <h2>Register</h2>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD-i9eQttqqwEOLH8tqPgYocn3Cx-aAa7I&libraries=places&callback=initAutocomplete" async defer></script>
-<script src="~/Scripts/googleMaps.js"></script>
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-<div class="form-horizontal">
-    <hr />
-    <div class="col-md-6">
+    <div class="form-horizontal">
+        <hr />
+        <div class="col-md-6">
 
-        <div class="form-group">
-            <label class="control-label col-md-4">CPR Number:</label>
-            <div class="col-md-6">
-                @Html.EditorFor(model => model.CPR, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.CPR, "", new { @class = "text-danger" })
+            <div class="form-group">
+                <label class="control-label col-md-4">CPR Number:</label>
+                <div class="col-md-6">
+                    @Html.EditorFor(model => model.CPR, new { htmlAttributes = new { @class = "form-control", @placeholder="Enter CPR number"} })
+                    @Html.ValidationMessageFor(model => model.CPR, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-4">First name:</label>
+                <div class="col-md-6">
+                    @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control", @placeholder = "Enter first name" } })
+                    @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-4">Last name:</label>
+                <div class="col-md-6">
+                    @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control", @placeholder = "Enter last name" } })
+                    @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-4">Address:</label>
+                <div class="col-md-6">
+                    <input type="text" id="autocomplete" class="form-control" onFocus="geolocate()" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-4">Street and number:</label>
+                <div class="col-md-4" id="locationField">
+                    @Html.EditorFor(model => model.AddressStreet, new { htmlAttributes = new { @class = "form-control col-md-10", @id = "route"} })
+
+                    @Html.ValidationMessageFor(model => model.AddressStreet, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-md-2">
+                    @Html.EditorFor(model => model.AddressNumber, new { htmlAttributes = new { @class = "form-control col-md-2", @id = "street_number" } })
+                </div>
+            </div>
+            <span id="administrative_area_level_1" style="display:none"></span>
+            <span id="country" style="display:none"></span>
+            <div class="form-group">
+                <label class="control-label col-md-4">Zip code:</label>
+                <div class="col-md-6">
+                    @Html.EditorFor(model => model.ZipCode, new { htmlAttributes = new { @class = "form-control field", @id="postal_code" } })
+                    @Html.ValidationMessageFor(model => model.ZipCode, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-4">City:</label>
+                <div class="col-md-6">
+                    @Html.EditorFor(model => model.City, new { htmlAttributes = new { @class = "form-control",@id="locality" } })
+                    @Html.ValidationMessageFor(model => model.City, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-4">Email:</label>
+                <div class="col-md-6">
+                    @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control",@placeholder="Enter email address" } })
+                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-4">Picture of yellow card:</label>
+                <div class="col-md-6">
+                    @Html.EditorFor(model => model.FileName, new { htmlAttributes = new { @class = "form-control", @type = "file" } })
+                    @Html.ValidationMessageFor(model => model.FileName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <label class="control-label col-md-4">Allergies:</label>
+            <div class="form-group col-md-6">
+                @{int i = 1;}
+                @foreach (var item in Model.Allergies)
+                {
+
+                    <div class="ceckbox">
+                        <label>
+                            <input type="checkbox"
+                                   name="SelectedAllergies"
+                                   value="@i" /> @item
+                            </label>
+                        </div>
+                        i++;
+                    }
             </div>
         </div>
-
-        <div class="form-group">
-            <label class="control-label col-md-4">First name:</label>
-            <div class="col-md-6">
-                @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+        <div class="col-md-6">
+            <div class="form-group">
+                <label class="control-label col-md-2">Password:</label>
+                <div class="col-md-3">
+                    @Html.PasswordFor(model => model.Password, new { htmlAttributes = new { @class = "form-control", @type = "file" } })
+                    @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                </div>
             </div>
         </div>
-
         <div class="form-group">
-            <label class="control-label col-md-4">Last name:</label>
-            <div class="col-md-6">
-                @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
             </div>
-        </div>
-
-        <div class="form-group">
-            <label class="control-label col-md-4">Address:</label>
-            <div class="col-md-6">
-                @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control", @id = "autocomplete", @onFocus = "geolocate()" } })
-                @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label class="control-label col-md-4">Zip code:</label>
-            <div class="col-md-6">
-                @Html.EditorFor(model => model.ZipCode, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.ZipCode, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label class="control-label col-md-4">City:</label>
-            <div class="col-md-6">
-                @Html.EditorFor(model => model.City, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.City, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label class="control-label col-md-4">Email:</label>
-            <div class="col-md-6">
-                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label class="control-label col-md-4">Picture of yellow card:</label>
-            <div class="col-md-6">
-                @Html.EditorFor(model => model.FileName, new { htmlAttributes = new { @class = "form-control", @type = "file" } })
-                @Html.ValidationMessageFor(model => model.FileName, "", new { @class = "text-danger" })
-            </div>
-        </div>
-        <label class="control-label col-md-4">Allergies:</label>
-        <div class="form-group col-md-6">
-            @{int i = 1;}
-            @foreach (var item in Model.Allergies)
-            {
-
-                <div class="ceckbox">
-                    <label>
-                        <input type="checkbox"
-                               name="SelectedAllergies"
-                               value="@i" /> @item
-                        </label>
-                    </div>
-                    i++;
-                }
         </div>
     </div>
-    <div class="col-md-6">
-        <div class="form-group">
-            <label class="control-label col-md-2">Password:</label>
-            <div class="col-md-3">
-                @Html.PasswordFor(model => model.Password, new { htmlAttributes = new { @class = "form-control", @type = "file" } })
-                @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
-            </div>
-        </div>
-    </div>
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Create" class="btn btn-default" />
-        </div>
-    </div>
-</div>
 }
-
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD-i9eQttqqwEOLH8tqPgYocn3Cx-aAa7I&libraries=places&callback=initAutocomplete" async defer></script>
+<script src="~/Scripts/googleMaps.js"></script>
 <div>
     @Html.ActionLink("Back", "Index")
 </div>

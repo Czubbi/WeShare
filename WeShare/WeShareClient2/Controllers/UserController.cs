@@ -116,6 +116,7 @@ namespace WeShareClient2.Controllers
                 // TODO : Uploading files to webserver 
                 var guidHandler = Guid.NewGuid();
                 string guid = guidHandler.ToString();
+                user.Address = $"{user.AddressStreet} {user.AddressNumber}";
                 _proxy.AddUser(new UserModel { CPR = user.CPR, FirstName = user.FirstName, LastName = user.LastName, Address = user.Address, ZipCode = user.ZipCode, City = user.City, Email = user.Email, Allergies = user.SelectedAllergies, GuidLine = guid,Password=user.Password});
 
                 return RedirectToAction("Index");
@@ -124,6 +125,14 @@ namespace WeShareClient2.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
             }
+        }
+
+        public ActionResult LogOut()
+        {
+            HttpCookie cookie = new HttpCookie("login");
+            cookie.Expires = DateTime.Now.AddDays(-1d);
+            Response.Cookies.Add(cookie);
+            return RedirectToAction("Index");
         }
 
         // GET: User/Edit/5
