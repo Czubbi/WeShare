@@ -368,6 +368,12 @@ namespace WeShareClient2.ServiceReference1 {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWeShareService/GetPasswordKey", ReplyAction="http://tempuri.org/IWeShareService/GetPasswordKeyResponse")]
         System.Threading.Tasks.Task<string[]> GetPasswordKeyAsync(string cpr);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWeShareService/GetAllFoods", ReplyAction="http://tempuri.org/IWeShareService/GetAllFoodsResponse")]
+        WeShareClient2.ServiceReference1.FoodModel[] GetAllFoods();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWeShareService/GetAllFoods", ReplyAction="http://tempuri.org/IWeShareService/GetAllFoodsResponse")]
+        System.Threading.Tasks.Task<WeShareClient2.ServiceReference1.FoodModel[]> GetAllFoodsAsync();
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -467,6 +473,14 @@ namespace WeShareClient2.ServiceReference1 {
         
         public System.Threading.Tasks.Task<string[]> GetPasswordKeyAsync(string cpr) {
             return base.Channel.GetPasswordKeyAsync(cpr);
+        }
+        
+        public WeShareClient2.ServiceReference1.FoodModel[] GetAllFoods() {
+            return base.Channel.GetAllFoods();
+        }
+        
+        public System.Threading.Tasks.Task<WeShareClient2.ServiceReference1.FoodModel[]> GetAllFoodsAsync() {
+            return base.Channel.GetAllFoodsAsync();
         }
     }
 }

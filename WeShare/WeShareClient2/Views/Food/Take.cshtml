@@ -1,0 +1,40 @@
+﻿@model IEnumerable<WeShareClient2.Models.FoodModel>
+
+@{
+    ViewBag.Title = "View";
+}
+
+<h2>Foods</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            Expires
+        </th>
+        <th>
+            Description
+        </th>
+        <th>
+            Photo
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.ExpDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Description)
+        </td>
+        <td>
+            @Html.ActionLink($"{item.PhotoPath}", "Download", new WeShareClient2.Models.DownloadModel { guid = item.Guid, fileName = item.PhotoPath })
+        </td>
+        <td>
+            @Html.ActionLink("Take", "TakeFood", new WeShareClient2.Models.FoodModel { Guid=item.Guid} ,new { htmlAttributes = new { @class = "btn btn-submit" } })
+        </td>
+    </tr>
+}
+
+</table>

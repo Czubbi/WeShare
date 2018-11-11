@@ -16,7 +16,7 @@
         <div id="nav">
             <div id="left">
                 <ul>
-                    <li><a href="@Url.Action("Index","Home")" id="title">WeShare</a></li>
+                    <li><a href="@Url.Action("Index", "Home")" id="title">WeShare</a></li>
                     <li><a>About us</a></li>
                     <li><a>Help</a></li>
                     <li><a>Contact us</a></li>
@@ -24,8 +24,18 @@
             </div>
             <div id="right">
                 <ul>
-                    <li><a href="@Url.Action("Create","User")" id="joinbutton">Sign up</a></li>
-                    <li><a href="@Url.Action("Index","User")" id="sendbutton">Login</a></li>
+                    @if (Request.Cookies.Get("login") != null)
+                    {
+                        <li><a href="@Url.Action("LoggedIn","User",new WeShareClient2.Models.UsernameModel { Username=Request.Cookies.Get("login").Values["feketePorzeczka"]})" style="color:lightgrey">@Request.Cookies.Get("login").Values["feketePorzeczka"]</a></li>
+                        <li><a href="@Url.Action("Take","Food")" id="joinbutton">Take food</a></li>
+                        <li><a href="@Url.Action("Create","Food")" id="sendbutton">Offer food</a></li>
+                    }
+                    else
+                    {
+                        <li><a href="@Url.Action("Create","User")" id="joinbutton">Sign up</a></li>
+                        <li><a href="@Url.Action("Index","User")" id="sendbutton">Login</a></li>
+                    }
+
                 </ul>
             </div>
         </div>

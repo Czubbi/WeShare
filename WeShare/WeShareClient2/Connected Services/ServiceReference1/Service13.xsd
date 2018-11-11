@@ -32,4 +32,10 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="FoodModel" nillable="true" type="tns:FoodModel" />
+  <xs:complexType name="ArrayOfFoodModel">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="FoodModel" nillable="true" type="tns:FoodModel" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfFoodModel" nillable="true" type="tns:ArrayOfFoodModel" />
 </xs:schema>

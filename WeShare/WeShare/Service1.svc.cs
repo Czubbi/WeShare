@@ -22,6 +22,9 @@ namespace WeShare
     public class WeShareService : IWeShareService
     {
         DatabaseClassesDataContext db = new DatabaseClassesDataContext();
+        static string[] Scopes = { GmailService.Scope.GmailReadonly };
+        static string ApplicationName = "Gmail API .NET Quickstart";
+
         
 
         public int AddFood(FoodModel food,string email)
@@ -171,8 +174,22 @@ namespace WeShare
                 msg.ReplyTo.Add(msg.From);
                 var msgStr = new StringWriter();
                 msg.Save(msgStr);
-
-                var gmail = new GmailService(Context.GoogleOAuthInitializer);
+                UserCredential credential;
+                using (var stream =
+                new FileStream("credentials.json", FileMode.Open, FileAccess.Read))
+                {
+                    // The file token.json stores the user's access and refresh tokens, and is created
+                    // automatically when the authorization flow completes for the first time.
+                    string credPath = "token.json";
+                    credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
+                        GoogleClientSecrets.Load(stream).Secrets,
+                        Scopes,
+                        "user",
+                        CancellationToken.None,
+                        new FileDataStore(credPath, true)).Result;
+                    Console.WriteLine("Credential file saved to: " + credPath);
+                }
+                var gmail = new GmailService(new BaseClientService.Initializer(){ HttpClientInitializer = credential,ApplicationName = ApplicationName });
                 var result = gmail.Users.Messages.Send(new Message
                 {
                     Raw = Base64UrlEncode(msgStr.ToString())
@@ -213,6 +230,19 @@ namespace WeShare
             }
             return passAndKey;
 
+        }
+
+        public List<FoodModel> GetAllFoods()
+        {
+            var foods = db.Foods.Where(x=>x.TakenBy==null).Select(x => new FoodModel
+            {
+                Description = x.Description,
+                Allergies = db.FoodAllergies.Where(y => y.Food.Guid == x.Guid).Select(y => (int)y.AllergyID).ToList(),
+                ExpDate = (System.DateTime)x.ExpDate,
+                GuidLine = x.Guid,
+                PhotoPath = x.PicPath
+            }).ToList();
+            return foods;
         }
     }
 }
