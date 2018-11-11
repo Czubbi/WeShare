@@ -73,5 +73,7 @@ namespace WeShare
         public string GuidLine { get; set; }
         [DataMember]
         public List<int> Allergies { get; set; }
+
+
     }
 }

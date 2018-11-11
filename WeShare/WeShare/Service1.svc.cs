@@ -1,11 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.ServiceModel.Web;
 using System.Text;
+using System.Threading;
 using System.Web.Security;
+using Google.Apis.Auth.OAuth2;
+using Google.Apis.Gmail.v1;
+using Google.Apis.Gmail.v1.Data;
+using Google.Apis.Services;
+using Google.Apis.Util.Store;
+using System.Net.Mail;
 
 namespace WeShare
 {
@@ -14,6 +22,8 @@ namespace WeShare
     public class WeShareService : IWeShareService
     {
         DatabaseClassesDataContext db = new DatabaseClassesDataContext();
+        
+
         public int AddFood(FoodModel food,string email)
         {
             db.Connection.Open();
@@ -148,11 +158,29 @@ namespace WeShare
 
         public int TakeFood(FoodModel food,string email)
         {
+
             Food foodTaken = db.Foods.SingleOrDefault(x => x.Guid == food.GuidLine);
             foodTaken.TakenBy = db.Users.SingleOrDefault(x => x.Email == email).ID;
             try
             {
                 db.SubmitChanges();
+
+                var msg = new AE.Net.Mail.MailMessage { Subject = "Someone just took your food!", Body = $"Someone just got interested in your offer and took the food. You can contact him/her via this email address: {email}", From = new MailAddress("piotr.gzubicki97@gmail.com") };
+
+                msg.To.Add(new MailAddress(foodTaken.User.Email));
+                msg.ReplyTo.Add(msg.From);
+                var msgStr = new StringWriter();
+                msg.Save(msgStr);
+
+                var gmail = new GmailService(Context.GoogleOAuthInitializer);
+                var result = gmail.Users.Messages.Send(new Message
+                {
+                    Raw = Base64UrlEncode(msgStr.ToString())
+                }, "me").Execute();
+                
+            
+
+  
             }
             catch (Exception e)
             {
@@ -160,6 +188,15 @@ namespace WeShare
             }
             return 1;
         }
+
+        private static string Base64UrlEncode(string input) {
+    var inputBytes = System.Text.Encoding.UTF8.GetBytes(input);
+    // Special "url-safe" base64 encode.
+    return Convert.ToBase64String(inputBytes)
+      .Replace('+', '-')
+      .Replace('/', '_')
+      .Replace("=", "");
+  }
         public List<string> GetAllAllergies()
         {
             return db.Allergies.Select(x => x.Name).ToList();
