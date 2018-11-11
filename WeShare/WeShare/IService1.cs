@@ -27,6 +27,10 @@ namespace WeShare
         int AddFood(FoodModel food,string email);
         [OperationContract]
         int TakeFood(FoodModel food, string email);
+        [OperationContract]
+        List<string> GetAllAllergies();
+        [OperationContract]
+        string[] GetPasswordKey(string cpr);
     }
 
 

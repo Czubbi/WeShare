@@ -33,9 +33,18 @@ namespace WeShare
     partial void InsertAllergy(Allergy instance);
     partial void UpdateAllergy(Allergy instance);
     partial void DeleteAllergy(Allergy instance);
+    partial void InsertUserAllergy(UserAllergy instance);
+    partial void UpdateUserAllergy(UserAllergy instance);
+    partial void DeleteUserAllergy(UserAllergy instance);
     partial void InsertFood(Food instance);
     partial void UpdateFood(Food instance);
     partial void DeleteFood(Food instance);
+    partial void InsertFoodAllergy(FoodAllergy instance);
+    partial void UpdateFoodAllergy(FoodAllergy instance);
+    partial void DeleteFoodAllergy(FoodAllergy instance);
+    partial void InsertPassword(Password instance);
+    partial void UpdatePassword(Password instance);
+    partial void DeletePassword(Password instance);
     partial void InsertUser(User instance);
     partial void UpdateUser(User instance);
     partial void DeleteUser(User instance);
@@ -130,6 +139,10 @@ namespace WeShare
 		
 		private string _Name;
 		
+		private EntitySet<UserAllergy> _UserAllergies;
+		
+		private EntitySet<FoodAllergy> _FoodAllergies;
+		
     #region Extensibility Method Definitions
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
@@ -142,6 +155,8 @@ namespace WeShare
 		
 		public Allergy()
 		{
+			this._UserAllergies = new EntitySet<UserAllergy>(new Action<UserAllergy>(this.attach_UserAllergies), new Action<UserAllergy>(this.detach_UserAllergies));
+			this._FoodAllergies = new EntitySet<FoodAllergy>(new Action<FoodAllergy>(this.attach_FoodAllergies), new Action<FoodAllergy>(this.detach_FoodAllergies));
 			OnCreated();
 		}
 		
@@ -185,6 +200,32 @@ namespace WeShare
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Allergy_UserAllergy", Storage="_UserAllergies", ThisKey="ID", OtherKey="AllergyID")]
+		public EntitySet<UserAllergy> UserAllergies
+		{
+			get
+			{
+				return this._UserAllergies;
+			}
+			set
+			{
+				this._UserAllergies.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Allergy_FoodAllergy", Storage="_FoodAllergies", ThisKey="ID", OtherKey="AllergyID")]
+		public EntitySet<FoodAllergy> FoodAllergies
+		{
+			get
+			{
+				return this._FoodAllergies;
+			}
+			set
+			{
+				this._FoodAllergies.Assign(value);
+			}
+		}
+		
 		public event PropertyChangingEventHandler PropertyChanging;
 		
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -204,18 +245,65 @@ namespace WeShare
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
 		}
+		
+		private void attach_UserAllergies(UserAllergy entity)
+		{
+			this.SendPropertyChanging();
+			entity.Allergy = this;
+		}
+		
+		private void detach_UserAllergies(UserAllergy entity)
+		{
+			this.SendPropertyChanging();
+			entity.Allergy = null;
+		}
+		
+		private void attach_FoodAllergies(FoodAllergy entity)
+		{
+			this.SendPropertyChanging();
+			entity.Allergy = this;
+		}
+		
+		private void detach_FoodAllergies(FoodAllergy entity)
+		{
+			this.SendPropertyChanging();
+			entity.Allergy = null;
+		}
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.UserAllergy")]
-	public partial class UserAllergy
+	public partial class UserAllergy : INotifyPropertyChanging, INotifyPropertyChanged
 	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
 		
 		private System.Nullable<int> _UserID;
 		
 		private System.Nullable<int> _AllergyID;
 		
+		private int _ID;
+		
+		private EntityRef<Allergy> _Allergy;
+		
+		private EntityRef<User> _User;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnUserIDChanging(System.Nullable<int> value);
+    partial void OnUserIDChanged();
+    partial void OnAllergyIDChanging(System.Nullable<int> value);
+    partial void OnAllergyIDChanged();
+    partial void OnIDChanging(int value);
+    partial void OnIDChanged();
+    #endregion
+		
 		public UserAllergy()
 		{
+			this._Allergy = default(EntityRef<Allergy>);
+			this._User = default(EntityRef<User>);
+			OnCreated();
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UserID", DbType="Int")]
@@ -229,7 +317,15 @@ namespace WeShare
 			{
 				if ((this._UserID != value))
 				{
+					if (this._User.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnUserIDChanging(value);
+					this.SendPropertyChanging();
 					this._UserID = value;
+					this.SendPropertyChanged("UserID");
+					this.OnUserIDChanged();
 				}
 			}
 		}
@@ -245,8 +341,124 @@ namespace WeShare
 			{
 				if ((this._AllergyID != value))
 				{
+					if (this._Allergy.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnAllergyIDChanging(value);
+					this.SendPropertyChanging();
 					this._AllergyID = value;
+					this.SendPropertyChanged("AllergyID");
+					this.OnAllergyIDChanged();
 				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int ID
+		{
+			get
+			{
+				return this._ID;
+			}
+			set
+			{
+				if ((this._ID != value))
+				{
+					this.OnIDChanging(value);
+					this.SendPropertyChanging();
+					this._ID = value;
+					this.SendPropertyChanged("ID");
+					this.OnIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Allergy_UserAllergy", Storage="_Allergy", ThisKey="AllergyID", OtherKey="ID", IsForeignKey=true)]
+		public Allergy Allergy
+		{
+			get
+			{
+				return this._Allergy.Entity;
+			}
+			set
+			{
+				Allergy previousValue = this._Allergy.Entity;
+				if (((previousValue != value) 
+							|| (this._Allergy.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Allergy.Entity = null;
+						previousValue.UserAllergies.Remove(this);
+					}
+					this._Allergy.Entity = value;
+					if ((value != null))
+					{
+						value.UserAllergies.Add(this);
+						this._AllergyID = value.ID;
+					}
+					else
+					{
+						this._AllergyID = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("Allergy");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_UserAllergy", Storage="_User", ThisKey="UserID", OtherKey="ID", IsForeignKey=true)]
+		public User User
+		{
+			get
+			{
+				return this._User.Entity;
+			}
+			set
+			{
+				User previousValue = this._User.Entity;
+				if (((previousValue != value) 
+							|| (this._User.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._User.Entity = null;
+						previousValue.UserAllergies.Remove(this);
+					}
+					this._User.Entity = value;
+					if ((value != null))
+					{
+						value.UserAllergies.Add(this);
+						this._UserID = value.ID;
+					}
+					else
+					{
+						this._UserID = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("User");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
 		}
 	}
@@ -270,6 +482,8 @@ namespace WeShare
 		private string _Guid;
 		
 		private System.Nullable<int> _TakenBy;
+		
+		private EntitySet<FoodAllergy> _FoodAllergies;
 		
 		private EntityRef<User> _User;
 		
@@ -297,6 +511,7 @@ namespace WeShare
 		
 		public Food()
 		{
+			this._FoodAllergies = new EntitySet<FoodAllergy>(new Action<FoodAllergy>(this.attach_FoodAllergies), new Action<FoodAllergy>(this.detach_FoodAllergies));
 			this._User = default(EntityRef<User>);
 			this._User1 = default(EntityRef<User>);
 			OnCreated();
@@ -450,6 +665,19 @@ namespace WeShare
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Food_FoodAllergy", Storage="_FoodAllergies", ThisKey="ID", OtherKey="FoodID")]
+		public EntitySet<FoodAllergy> FoodAllergies
+		{
+			get
+			{
+				return this._FoodAllergies;
+			}
+			set
+			{
+				this._FoodAllergies.Assign(value);
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_Food", Storage="_User", ThisKey="TakenBy", OtherKey="ID", IsForeignKey=true)]
 		public User User
 		{
@@ -537,18 +765,53 @@ namespace WeShare
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
 		}
+		
+		private void attach_FoodAllergies(FoodAllergy entity)
+		{
+			this.SendPropertyChanging();
+			entity.Food = this;
+		}
+		
+		private void detach_FoodAllergies(FoodAllergy entity)
+		{
+			this.SendPropertyChanging();
+			entity.Food = null;
+		}
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.FoodAllergy")]
-	public partial class FoodAllergy
+	public partial class FoodAllergy : INotifyPropertyChanging, INotifyPropertyChanged
 	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
 		
 		private System.Nullable<int> _FoodID;
 		
 		private System.Nullable<int> _AllergyID;
 		
+		private int _ID;
+		
+		private EntityRef<Allergy> _Allergy;
+		
+		private EntityRef<Food> _Food;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnFoodIDChanging(System.Nullable<int> value);
+    partial void OnFoodIDChanged();
+    partial void OnAllergyIDChanging(System.Nullable<int> value);
+    partial void OnAllergyIDChanged();
+    partial void OnIDChanging(int value);
+    partial void OnIDChanged();
+    #endregion
+		
 		public FoodAllergy()
 		{
+			this._Allergy = default(EntityRef<Allergy>);
+			this._Food = default(EntityRef<Food>);
+			OnCreated();
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FoodID", DbType="Int")]
@@ -562,7 +825,15 @@ namespace WeShare
 			{
 				if ((this._FoodID != value))
 				{
+					if (this._Food.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnFoodIDChanging(value);
+					this.SendPropertyChanging();
 					this._FoodID = value;
+					this.SendPropertyChanged("FoodID");
+					this.OnFoodIDChanged();
 				}
 			}
 		}
@@ -578,22 +849,158 @@ namespace WeShare
 			{
 				if ((this._AllergyID != value))
 				{
+					if (this._Allergy.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnAllergyIDChanging(value);
+					this.SendPropertyChanging();
 					this._AllergyID = value;
+					this.SendPropertyChanged("AllergyID");
+					this.OnAllergyIDChanged();
 				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int ID
+		{
+			get
+			{
+				return this._ID;
+			}
+			set
+			{
+				if ((this._ID != value))
+				{
+					this.OnIDChanging(value);
+					this.SendPropertyChanging();
+					this._ID = value;
+					this.SendPropertyChanged("ID");
+					this.OnIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Allergy_FoodAllergy", Storage="_Allergy", ThisKey="AllergyID", OtherKey="ID", IsForeignKey=true)]
+		public Allergy Allergy
+		{
+			get
+			{
+				return this._Allergy.Entity;
+			}
+			set
+			{
+				Allergy previousValue = this._Allergy.Entity;
+				if (((previousValue != value) 
+							|| (this._Allergy.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Allergy.Entity = null;
+						previousValue.FoodAllergies.Remove(this);
+					}
+					this._Allergy.Entity = value;
+					if ((value != null))
+					{
+						value.FoodAllergies.Add(this);
+						this._AllergyID = value.ID;
+					}
+					else
+					{
+						this._AllergyID = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("Allergy");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Food_FoodAllergy", Storage="_Food", ThisKey="FoodID", OtherKey="ID", IsForeignKey=true)]
+		public Food Food
+		{
+			get
+			{
+				return this._Food.Entity;
+			}
+			set
+			{
+				Food previousValue = this._Food.Entity;
+				if (((previousValue != value) 
+							|| (this._Food.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Food.Entity = null;
+						previousValue.FoodAllergies.Remove(this);
+					}
+					this._Food.Entity = value;
+					if ((value != null))
+					{
+						value.FoodAllergies.Add(this);
+						this._FoodID = value.ID;
+					}
+					else
+					{
+						this._FoodID = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("Food");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
 		}
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Password")]
-	public partial class Password
+	public partial class Password : INotifyPropertyChanging, INotifyPropertyChanged
 	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
 		
 		private string _UserPassKey;
 		
 		private string _Password1;
 		
+		private int _ID;
+		
+		private EntityRef<User> _User;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnUserPassKeyChanging(string value);
+    partial void OnUserPassKeyChanged();
+    partial void OnPassword1Changing(string value);
+    partial void OnPassword1Changed();
+    partial void OnIDChanging(int value);
+    partial void OnIDChanged();
+    #endregion
+		
 		public Password()
 		{
+			this._User = default(EntityRef<User>);
+			OnCreated();
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UserPassKey", DbType="VarChar(40)")]
@@ -607,7 +1014,15 @@ namespace WeShare
 			{
 				if ((this._UserPassKey != value))
 				{
+					if (this._User.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnUserPassKeyChanging(value);
+					this.SendPropertyChanging();
 					this._UserPassKey = value;
+					this.SendPropertyChanged("UserPassKey");
+					this.OnUserPassKeyChanged();
 				}
 			}
 		}
@@ -623,8 +1038,86 @@ namespace WeShare
 			{
 				if ((this._Password1 != value))
 				{
+					this.OnPassword1Changing(value);
+					this.SendPropertyChanging();
 					this._Password1 = value;
+					this.SendPropertyChanged("Password1");
+					this.OnPassword1Changed();
 				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int ID
+		{
+			get
+			{
+				return this._ID;
+			}
+			set
+			{
+				if ((this._ID != value))
+				{
+					this.OnIDChanging(value);
+					this.SendPropertyChanging();
+					this._ID = value;
+					this.SendPropertyChanged("ID");
+					this.OnIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_Password", Storage="_User", ThisKey="UserPassKey", OtherKey="PassKey", IsForeignKey=true)]
+		public User User
+		{
+			get
+			{
+				return this._User.Entity;
+			}
+			set
+			{
+				User previousValue = this._User.Entity;
+				if (((previousValue != value) 
+							|| (this._User.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._User.Entity = null;
+						previousValue.Passwords.Remove(this);
+					}
+					this._User.Entity = value;
+					if ((value != null))
+					{
+						value.Passwords.Add(this);
+						this._UserPassKey = value.PassKey;
+					}
+					else
+					{
+						this._UserPassKey = default(string);
+					}
+					this.SendPropertyChanged("User");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
 		}
 	}
@@ -655,9 +1148,13 @@ namespace WeShare
 		
 		private string _PassKey;
 		
+		private EntitySet<UserAllergy> _UserAllergies;
+		
 		private EntitySet<Food> _Foods;
 		
 		private EntitySet<Food> _Foods1;
+		
+		private EntitySet<Password> _Passwords;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -687,8 +1184,10 @@ namespace WeShare
 		
 		public User()
 		{
+			this._UserAllergies = new EntitySet<UserAllergy>(new Action<UserAllergy>(this.attach_UserAllergies), new Action<UserAllergy>(this.detach_UserAllergies));
 			this._Foods = new EntitySet<Food>(new Action<Food>(this.attach_Foods), new Action<Food>(this.detach_Foods));
 			this._Foods1 = new EntitySet<Food>(new Action<Food>(this.attach_Foods1), new Action<Food>(this.detach_Foods1));
+			this._Passwords = new EntitySet<Password>(new Action<Password>(this.attach_Passwords), new Action<Password>(this.detach_Passwords));
 			OnCreated();
 		}
 		
@@ -892,6 +1391,19 @@ namespace WeShare
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_UserAllergy", Storage="_UserAllergies", ThisKey="ID", OtherKey="UserID")]
+		public EntitySet<UserAllergy> UserAllergies
+		{
+			get
+			{
+				return this._UserAllergies;
+			}
+			set
+			{
+				this._UserAllergies.Assign(value);
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_Food", Storage="_Foods", ThisKey="ID", OtherKey="TakenBy")]
 		public EntitySet<Food> Foods
 		{
@@ -918,6 +1430,19 @@ namespace WeShare
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_Password", Storage="_Passwords", ThisKey="PassKey", OtherKey="UserPassKey")]
+		public EntitySet<Password> Passwords
+		{
+			get
+			{
+				return this._Passwords;
+			}
+			set
+			{
+				this._Passwords.Assign(value);
+			}
+		}
+		
 		public event PropertyChangingEventHandler PropertyChanging;
 		
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -936,6 +1461,18 @@ namespace WeShare
 			{
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
+		}
+		
+		private void attach_UserAllergies(UserAllergy entity)
+		{
+			this.SendPropertyChanging();
+			entity.User = this;
+		}
+		
+		private void detach_UserAllergies(UserAllergy entity)
+		{
+			this.SendPropertyChanging();
+			entity.User = null;
 		}
 		
 		private void attach_Foods(Food entity)
@@ -960,6 +1497,18 @@ namespace WeShare
 		{
 			this.SendPropertyChanging();
 			entity.User1 = null;
+		}
+		
+		private void attach_Passwords(Password entity)
+		{
+			this.SendPropertyChanging();
+			entity.User = this;
+		}
+		
+		private void detach_Passwords(Password entity)
+		{
+			this.SendPropertyChanging();
+			entity.User = null;
 		}
 	}
 }

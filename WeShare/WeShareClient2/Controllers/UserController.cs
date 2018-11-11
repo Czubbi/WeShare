@@ -18,7 +18,7 @@ namespace WeShareClient2.Controllers
 
         public UserController(IWeShareService proxy)
         {
-            this._proxy = proxy;
+            _proxy = proxy;
         }
 
         // GET: User
@@ -54,8 +54,10 @@ namespace WeShareClient2.Controllers
                 return View(userCred);
             }
 
-            string hashString = Hash(userCred.PassKey);
-            if (dbUser.Password == userCred.PassKey)
+            
+            var passAndKey = _proxy.GetPasswordKey(dbUser.CPR);
+            string hashString = Hash(passAndKey[1]);
+            if (passAndKey[0] == userCred.PassKey)
             {
                 UsernameModel userToPass = new UsernameModel { Username = userCred.Username };
 
@@ -63,6 +65,7 @@ namespace WeShareClient2.Controllers
                 cookie.Values.Add("feketePorzeczka", userToPass.Username);
                 cookie.Values.Add("pirosPorzeczka", hashString);
                 cookie.Expires = DateTime.Now.AddDays(7);
+                Response.Cookies.Add(cookie);
                 return RedirectToAction("LoggedIn", userToPass);
             }
             else return View(userCred);
@@ -75,7 +78,7 @@ namespace WeShareClient2.Controllers
                 return RedirectToAction("Index");
 
             var dbUser = _proxy.GetAllUsers().SingleOrDefault(x => x.Email == user.Username);
-            RegistrationModel fullUser = new RegistrationModel { CPR = dbUser.CPR, FirstName = dbUser.FirstName, LastName = dbUser.LastName, Address = dbUser.Address, ZipCode = dbUser.ZipCode, City = dbUser.City, Email = dbUser.Email, Allergies = dbUser.Allergies, Password = dbUser.Password };
+            RegistrationModel fullUser = new RegistrationModel { CPR = dbUser.CPR, FirstName = dbUser.FirstName, LastName = dbUser.LastName, Address = dbUser.Address, ZipCode = dbUser.ZipCode, City = dbUser.City, Email = dbUser.Email, SelectedAllergies = dbUser.Allergies, Password = dbUser.Password };
 
             if (Request.Cookies.Get("login") != null)
             {
@@ -98,7 +101,8 @@ namespace WeShareClient2.Controllers
         // GET: User/Create
         public ActionResult Create()
         {
-            return View();
+            RegistrationModel regModel = new RegistrationModel { Allergies = _proxy.GetAllAllergies().ToList() };
+            return View(regModel);
         }
 
         // POST: User/Create
@@ -110,7 +114,9 @@ namespace WeShareClient2.Controllers
                 if (!ModelState.IsValid)
                     return View("Create", user);
                 // TODO : Uploading files to webserver 
-                _proxy.AddUser(new UserModel { CPR = user.CPR, FirstName = user.FirstName, LastName = user.LastName, Address = user.Address, ZipCode = user.ZipCode, City = user.City, Email = user.Email, Allergies = user.Allergies, GuidLine = user.Guid });
+                var guidHandler = Guid.NewGuid();
+                string guid = guidHandler.ToString();
+                _proxy.AddUser(new UserModel { CPR = user.CPR, FirstName = user.FirstName, LastName = user.LastName, Address = user.Address, ZipCode = user.ZipCode, City = user.City, Email = user.Email, Allergies = user.SelectedAllergies, GuidLine = guid,Password=user.Password});
 
                 return RedirectToAction("Index");
             }

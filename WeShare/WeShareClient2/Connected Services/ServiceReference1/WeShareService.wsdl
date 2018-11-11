@@ -50,6 +50,18 @@
   <wsdl:message name="IWeShareService_TakeFood_OutputMessage">
     <wsdl:part name="parameters" element="tns:TakeFoodResponse" />
   </wsdl:message>
+  <wsdl:message name="IWeShareService_GetAllAllergies_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetAllAllergies" />
+  </wsdl:message>
+  <wsdl:message name="IWeShareService_GetAllAllergies_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetAllAllergiesResponse" />
+  </wsdl:message>
+  <wsdl:message name="IWeShareService_GetPasswordKey_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetPasswordKey" />
+  </wsdl:message>
+  <wsdl:message name="IWeShareService_GetPasswordKey_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetPasswordKeyResponse" />
+  </wsdl:message>
   <wsdl:portType name="IWeShareService">
     <wsdl:operation name="GetAllUsers">
       <wsdl:input wsaw:Action="http://tempuri.org/IWeShareService/GetAllUsers" message="tns:IWeShareService_GetAllUsers_InputMessage" />
@@ -78,6 +90,14 @@
     <wsdl:operation name="TakeFood">
       <wsdl:input wsaw:Action="http://tempuri.org/IWeShareService/TakeFood" message="tns:IWeShareService_TakeFood_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IWeShareService/TakeFoodResponse" message="tns:IWeShareService_TakeFood_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAllAllergies">
+      <wsdl:input wsaw:Action="http://tempuri.org/IWeShareService/GetAllAllergies" message="tns:IWeShareService_GetAllAllergies_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IWeShareService/GetAllAllergiesResponse" message="tns:IWeShareService_GetAllAllergies_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetPasswordKey">
+      <wsdl:input wsaw:Action="http://tempuri.org/IWeShareService/GetPasswordKey" message="tns:IWeShareService_GetPasswordKey_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IWeShareService/GetPasswordKeyResponse" message="tns:IWeShareService_GetPasswordKey_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_IWeShareService" type="tns:IWeShareService">
@@ -138,6 +158,24 @@
     </wsdl:operation>
     <wsdl:operation name="TakeFood">
       <soap:operation soapAction="http://tempuri.org/IWeShareService/TakeFood" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllAllergies">
+      <soap:operation soapAction="http://tempuri.org/IWeShareService/GetAllAllergies" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPasswordKey">
+      <soap:operation soapAction="http://tempuri.org/IWeShareService/GetPasswordKey" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

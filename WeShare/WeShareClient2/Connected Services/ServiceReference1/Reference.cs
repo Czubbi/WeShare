@@ -356,6 +356,18 @@ namespace WeShareClient2.ServiceReference1 {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWeShareService/TakeFood", ReplyAction="http://tempuri.org/IWeShareService/TakeFoodResponse")]
         System.Threading.Tasks.Task<int> TakeFoodAsync(WeShareClient2.ServiceReference1.FoodModel food, string email);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWeShareService/GetAllAllergies", ReplyAction="http://tempuri.org/IWeShareService/GetAllAllergiesResponse")]
+        string[] GetAllAllergies();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWeShareService/GetAllAllergies", ReplyAction="http://tempuri.org/IWeShareService/GetAllAllergiesResponse")]
+        System.Threading.Tasks.Task<string[]> GetAllAllergiesAsync();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWeShareService/GetPasswordKey", ReplyAction="http://tempuri.org/IWeShareService/GetPasswordKeyResponse")]
+        string[] GetPasswordKey(string cpr);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWeShareService/GetPasswordKey", ReplyAction="http://tempuri.org/IWeShareService/GetPasswordKeyResponse")]
+        System.Threading.Tasks.Task<string[]> GetPasswordKeyAsync(string cpr);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -439,6 +451,22 @@ namespace WeShareClient2.ServiceReference1 {
         
         public System.Threading.Tasks.Task<int> TakeFoodAsync(WeShareClient2.ServiceReference1.FoodModel food, string email) {
             return base.Channel.TakeFoodAsync(food, email);
+        }
+        
+        public string[] GetAllAllergies() {
+            return base.Channel.GetAllAllergies();
+        }
+        
+        public System.Threading.Tasks.Task<string[]> GetAllAllergiesAsync() {
+            return base.Channel.GetAllAllergiesAsync();
+        }
+        
+        public string[] GetPasswordKey(string cpr) {
+            return base.Channel.GetPasswordKey(cpr);
+        }
+        
+        public System.Threading.Tasks.Task<string[]> GetPasswordKeyAsync(string cpr) {
+            return base.Channel.GetPasswordKeyAsync(cpr);
         }
     }
 }

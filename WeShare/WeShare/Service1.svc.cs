@@ -59,7 +59,7 @@ namespace WeShare
             db.Connection.Open();
             var users = db.Users;
             string passkey=Membership.GeneratePassword(user.Password.Length,0);
-            var userToInsert = new User { Address = user.Address, City = user.City, CPR = user.CPR, Email = user.CPR, LastName = user.LastName, FirstName = user.FirstName, GuidLine = user.GuidLine, ZipCode = user.ZipCode,PassKey=passkey };
+            var userToInsert = new User { Address = user.Address, City = user.City, CPR = user.CPR, Email = user.Email, LastName = user.LastName, FirstName = user.FirstName, GuidLine = user.GuidLine, ZipCode = user.ZipCode,PassKey=passkey };
             try
             {
                 users.InsertOnSubmit(userToInsert);
@@ -77,6 +77,12 @@ namespace WeShare
             catch(Exception e)
             {
                 return 0;
+            }
+            foreach (var a in user.Allergies)
+            {
+                UserAllergy allergy = new UserAllergy { AllergyID = a, UserID = users.Single(x => x.CPR == user.CPR).ID };
+                db.UserAllergies.InsertOnSubmit(allergy);
+                db.SubmitChanges();
             }
             db.Connection.Close();
             return 1;
@@ -153,6 +159,23 @@ namespace WeShare
                 return 0;
             }
             return 1;
+        }
+        public List<string> GetAllAllergies()
+        {
+            return db.Allergies.Select(x => x.Name).ToList();
+        }
+        public string[] GetPasswordKey(string cpr)
+        {
+            var user = db.Users.SingleOrDefault(x => x.CPR == cpr);
+            string[] passAndKey = new string[2];
+            if (user != null)
+            {
+                var passKeys = db.Passwords.Single(x => x.User.ID == user.ID);
+                passAndKey[0] = passKeys.Password1;
+                passAndKey[1] = passKeys.UserPassKey; 
+            }
+            return passAndKey;
+
         }
     }
 }

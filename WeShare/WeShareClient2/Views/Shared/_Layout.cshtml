@@ -6,37 +6,62 @@
     <title>@ViewBag.Title - My ASP.NET Application</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <script src="~/Scripts/customScripts.js"></script>
 </head>
-<body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+<body onScroll="navScroll()" onload="loading()">
+    <div id="blur">
+    </div>
+    <div id="container">
+        <div id="nav">
+            <div id="left">
+                <ul>
+                    <li><a href="@Url.Action("Index","Home")" id="title">WeShare</a></li>
+                    <li><a>About us</a></li>
+                    <li><a>Help</a></li>
+                    <li><a>Contact us</a></li>
+                </ul>
             </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+            <div id="right">
+                <ul>
+                    <li><a href="@Url.Action("Create","User")" id="joinbutton">Sign up</a></li>
+                    <li><a href="@Url.Action("Index","User")" id="sendbutton">Login</a></li>
                 </ul>
             </div>
         </div>
-    </div>
-    <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
-        </footer>
+        <div id="mobilenav">
+            <div id="pic" onclick="showMenu()">
+            </div>
+            <a id="title" href="@Url.Action("Index","Home")">DeliverIT</a>
+            <a id="sendbutton" href="@Url.Action("Index","User")">Login</a>
+            <a id="joinbutton" href="@Url.Action("Create","User")">Sign up</a>
+            <div id="hidden">
+                <ul>
+                    <li onclick="goToAbout()"><a>About us</a></li>
+                    <li><a>Help</a></li>
+                    <li><a>Contact us</a></li>
+                </ul>
+            </div>
+        </div>
+        <div id="content">
+            <div @(ViewBag.Title == "Home Page" ? "id=bigTopCont class=bigEmptyBox" : "id=topCont class=emptyBox")>
+                <div @(ViewBag.Title == "Home Page" ? "id=bigEmptyText" : "id=emptyText")>
+                    <p>Give it away, don't throw it away</p>
+                </div>
+            </div>
+            <div class="textBox">
+                @RenderBody()
+                <hr />
+                <footer>
+                    <p align="center">&copy; @DateTime.Now.Year - WeShare</p>
+                </footer>
+            </div>
+
+            @Scripts.Render("~/bundles/jquery")
+            @Scripts.Render("~/bundles/bootstrap")
+            @RenderSection("scripts", required: false)
+        </div>
     </div>
 
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
-    @RenderSection("scripts", required: false)
 </body>
 </html>
