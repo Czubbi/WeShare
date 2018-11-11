@@ -25,6 +25,8 @@ namespace WeShare
         static string[] Scopes = { GmailService.Scope.GmailReadonly };
         static string ApplicationName = "Gmail API .NET Quickstart";
 
+        
+
         public int AddFood(FoodModel food,string email)
         {
             db.Connection.Open();
@@ -228,6 +230,19 @@ namespace WeShare
             }
             return passAndKey;
 
+        }
+
+        public List<FoodModel> GetAllFoods()
+        {
+            var foods = db.Foods.Where(x=>x.TakenBy==null).Select(x => new FoodModel
+            {
+                Description = x.Description,
+                Allergies = db.FoodAllergies.Where(y => y.Food.Guid == x.Guid).Select(y => (int)y.AllergyID).ToList(),
+                ExpDate = (System.DateTime)x.ExpDate,
+                GuidLine = x.Guid,
+                PhotoPath = x.PicPath
+            }).ToList();
+            return foods;
         }
     }
 }

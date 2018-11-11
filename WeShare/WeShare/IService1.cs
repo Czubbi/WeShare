@@ -31,6 +31,8 @@ namespace WeShare
         List<string> GetAllAllergies();
         [OperationContract]
         string[] GetPasswordKey(string cpr);
+        [OperationContract]
+        List<FoodModel> GetAllFoods();
     }
 
 

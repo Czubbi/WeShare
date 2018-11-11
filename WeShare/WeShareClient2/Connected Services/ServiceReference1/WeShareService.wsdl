@@ -62,6 +62,12 @@
   <wsdl:message name="IWeShareService_GetPasswordKey_OutputMessage">
     <wsdl:part name="parameters" element="tns:GetPasswordKeyResponse" />
   </wsdl:message>
+  <wsdl:message name="IWeShareService_GetAllFoods_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetAllFoods" />
+  </wsdl:message>
+  <wsdl:message name="IWeShareService_GetAllFoods_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetAllFoodsResponse" />
+  </wsdl:message>
   <wsdl:portType name="IWeShareService">
     <wsdl:operation name="GetAllUsers">
       <wsdl:input wsaw:Action="http://tempuri.org/IWeShareService/GetAllUsers" message="tns:IWeShareService_GetAllUsers_InputMessage" />
@@ -98,6 +104,10 @@
     <wsdl:operation name="GetPasswordKey">
       <wsdl:input wsaw:Action="http://tempuri.org/IWeShareService/GetPasswordKey" message="tns:IWeShareService_GetPasswordKey_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IWeShareService/GetPasswordKeyResponse" message="tns:IWeShareService_GetPasswordKey_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAllFoods">
+      <wsdl:input wsaw:Action="http://tempuri.org/IWeShareService/GetAllFoods" message="tns:IWeShareService_GetAllFoods_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IWeShareService/GetAllFoodsResponse" message="tns:IWeShareService_GetAllFoods_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_IWeShareService" type="tns:IWeShareService">
@@ -176,6 +186,15 @@
     </wsdl:operation>
     <wsdl:operation name="GetPasswordKey">
       <soap:operation soapAction="http://tempuri.org/IWeShareService/GetPasswordKey" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllFoods">
+      <soap:operation soapAction="http://tempuri.org/IWeShareService/GetAllFoods" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

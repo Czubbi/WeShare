@@ -126,4 +126,16 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
+  <xs:element name="GetAllFoods">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetAllFoodsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q10="http://schemas.datacontract.org/2004/07/WeShare" minOccurs="0" name="GetAllFoodsResult" nillable="true" type="q10:ArrayOfFoodModel" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
 </xs:schema>
