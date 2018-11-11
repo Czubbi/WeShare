@@ -350,7 +350,7 @@ ul {
 #bigTopCont {
     height: 100vh;
     background-image: url(../Resources/bg.png);
-    background-attachment: scroll;
+    background-attachment: fixed;
     background-size: cover;
     transform: scale(1.0);
     margin: 0 auto;
@@ -367,7 +367,7 @@ ul {
 #topCont {
     height: 200px;
     background-image: url(../Resources/bg.png);
-    background-attachment: scroll;
+    background-attachment: fixed;
     background-size: cover;
     transform: scale(1.0);
     margin: 0 auto;

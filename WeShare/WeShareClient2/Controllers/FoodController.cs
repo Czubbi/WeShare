@@ -50,7 +50,6 @@ namespace WeShareClient2.Controllers
                 System.IO.Directory.CreateDirectory(Server.MapPath($"~/App_Data/{guid}"));
                 food.files[0].SaveAs(Server.MapPath($"~/App_Data/{guid}/{fileName}"));
                 _proxy.AddFood(new ServiceReference1.FoodModel { ExpDate = food.ExpDate, Description = food.Description, PhotoPath = fileName, GuidLine = guid, Allergies = food.SelectedAllergies }, Request.Cookies.Get("login").Values["feketePorzeczka"]);
-               
 
                 return RedirectToAction("Index","User","");
             }
