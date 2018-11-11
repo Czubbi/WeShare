@@ -29,10 +29,10 @@
             @Html.DisplayFor(modelItem => item.Description)
         </td>
         <td>
-            @Html.ActionLink($"{item.PhotoPath}","Download",new WeShareClient2.Models.DownloadModel { guid=item.Guid,fileName=item.PhotoPath})
+            @Html.ActionLink($"{item.PhotoPath}", "Download", new WeShareClient2.Models.DownloadModel { guid = item.Guid, fileName = item.PhotoPath })
         </td>
         <td>
-            @Html.ActionLink("Take", "Take", item ,new { htmlAttributes = new { @class = "btn btn-success" } })
+            @Html.ActionLink("Take", "TakeFood", new WeShareClient2.Models.FoodModel { Guid=item.Guid} ,new { htmlAttributes = new { @class = "btn btn-submit" } })
         </td>
     </tr>
 }

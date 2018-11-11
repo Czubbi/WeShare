@@ -79,11 +79,12 @@ namespace WeShareClient2.Controllers
             return View(foodModels);
         }
 
-        [HttpPost]
-        public ActionResult Take(Models.FoodModel model)
+
+        public ActionResult TakeFood(Models.FoodModel model)
         {
-            var model2 = new ServiceReference1.FoodModel { Allergies = model.SelectedAllergies, Description = model.Description, ExpDate = model.ExpDate, GuidLine = model.Guid, PhotoPath = model.PhotoPath };
-            _proxy.TakeFood(model2, Request.Cookies.Get("login").Values["feketePorzeczka"]);
+            var model2 = new ServiceReference1.FoodModel { GuidLine = model.Guid };
+            var email = Request.Cookies.Get("login").Values["feketePorzeczka"];
+            _proxy.TakeFood(model2,email);
             return RedirectToAction("Take");
         }
 
